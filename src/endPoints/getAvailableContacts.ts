@@ -8,14 +8,32 @@
  import jwt, { verify } from 'jsonwebtoken';
  import JWTSECRET from '../constants';
  import passportJWT from 'passport-jwt';
+ import axios from 'axios';
  
- router.use('/getAvailablecontacts', passport.authenticate('jwt', {session:false}), async(req,res)=>{
+ router.use('/getAvailablecontacts', async(req,res)=>{
+
+    axios.post('http://localhost:5002/api/getAvailablecontacts',{},{headers:{cookie: req.headers.cookie}}).then(
+     async function(response){
+        // console.log('connected succesfully to authenticate', response.data)
+
+
+        res.json(response.data)
+      }
+    ).catch(function(error){
+      console.log('failed to connect axios into athenticate')
+    }).then(function(){
+      console.log('got into the .then')
+      
+    
+    })
+    // const listOfAvailableContacts = await User.findOne({_id: response.data._id}, {contacts:1})
+    // .populate({
+    //     path: 'contacts.contact',
+    //     select: 'username  email'
+    // })
+
     //  console.log('req.user: ',req.user)
-     const listOfAvailableContacts = await User.findOne({_id: req.user!._id}, {contacts:1})
-     .populate({
-         path: 'contacts.contact',
-         select: 'username  email'
-     })
+
     //  .populate({
     //      path: 'contacts.conversationId',
     //      select:  'participants creationTime',
@@ -24,7 +42,7 @@
     //          select: 'email, username'
     //      }});
     //  console.log('list from the populate for availablecontacts3:', listOfAvailableContacts)
-    res.json(listOfAvailableContacts);
+    // res.json(listOfAvailableContacts);
  })
 
  export default router;

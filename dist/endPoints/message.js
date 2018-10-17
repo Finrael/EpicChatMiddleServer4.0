@@ -13,33 +13,37 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 // imports
 const express_1 = __importDefault(require("express"));
-const passport_1 = __importDefault(require("passport"));
 const router = express_1.default.Router();
-const messageSchema_1 = __importDefault(require("../db/models/messageSchema"));
-const mongoose_1 = require("mongoose");
 const SocketConfig_1 = require("../SocketConfig");
-router.use('/message', passport_1.default.authenticate('jwt', { session: false }), (req, res) => __awaiter(this, void 0, void 0, function* () {
+const axios_1 = __importDefault(require("axios"));
+router.use('/message', (req, res) => __awaiter(this, void 0, void 0, function* () {
     //  console.log('from authenticate getProfile ',req.user);
-    try {
-        // console.log('body: ', req.body);
-        // console.log('user: ', req.user);
-        const creationDate = new Date();
-        const newMessage = {
-            messageText: req.body.textMessage,
-            messageTime: creationDate,
-            messageOriginator: { _Id: req.user._id, name: req.user.username },
-            conversationId: new mongoose_1.Types.ObjectId(req.body.convId),
-        };
-        const generateMessage = yield messageSchema_1.default.create(newMessage);
-        //  console.log(generateMessage)
-        res.json(generateMessage);
-        SocketConfig_1.io.to(req.body.convId).emit('newMessage', generateMessage);
-        console.log('it whent int to /message', req.body.convId);
-    }
-    catch (e) {
-        console.log(e);
-        res.end();
-    }
-    // res.json(newMessage)
+    // console.log('messageS:', req.body.convId)
+    axios_1.default.post('http://localhost:5002/api/message', {}, { headers: { cookie: req.headers.cookie, convId: req.body.convId, textMessage: req.body.textMessage } }).then(function (response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('connected succesfully to authenticate', response.data);
+            SocketConfig_1.io.to(response.data.convId).emit('newMessage', response.data.message);
+            res.json(response.data.message);
+        });
+    }).catch(function (error) {
+        console.log('failed to connect axios into convId');
+    }).then(function () {
+        console.log('got into the .then');
+    });
 }));
+///////////////////////////////////////////////////////////////
+//  const creationDate = new Date()
+//  const newMessage = {
+//     messageText: req.body.textMessage,
+//     messageTime:creationDate,
+//     messageOriginator:{_Id:req.user!._id, name:req.user!.username},
+//     conversationId: new Types.ObjectId(req.body.convId),
+//  }
+//  const generateMessage = await message.create(newMessage);
+// //  console.log(generateMessage)
+//  res.json(generateMessage);
+//  io.to(req.body.convId).emit('newMessage',generateMessage )
+//  console.log('it whent int to /message', req.body.convId)
+// res.json(newMessage)
+//  });
 exports.default = router;

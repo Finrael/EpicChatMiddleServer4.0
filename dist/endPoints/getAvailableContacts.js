@@ -13,16 +13,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 // imports
 const express_1 = __importDefault(require("express"));
-const registerSchema_1 = __importDefault(require("../db/models/registerSchema"));
-const passport_1 = __importDefault(require("passport"));
 const router = express_1.default.Router();
-router.use('/getAvailablecontacts', passport_1.default.authenticate('jwt', { session: false }), (req, res) => __awaiter(this, void 0, void 0, function* () {
-    //  console.log('req.user: ',req.user)
-    const listOfAvailableContacts = yield registerSchema_1.default.findOne({ _id: req.user._id }, { contacts: 1 })
-        .populate({
-        path: 'contacts.contact',
-        select: 'username  email'
+const axios_1 = __importDefault(require("axios"));
+router.use('/getAvailablecontacts', (req, res) => __awaiter(this, void 0, void 0, function* () {
+    axios_1.default.post('http://localhost:5002/api/getAvailablecontacts', {}, { headers: { cookie: req.headers.cookie } }).then(function (response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // console.log('connected succesfully to authenticate', response.data)
+            res.json(response.data);
+        });
+    }).catch(function (error) {
+        console.log('failed to connect axios into athenticate');
+    }).then(function () {
+        console.log('got into the .then');
     });
+    // const listOfAvailableContacts = await User.findOne({_id: response.data._id}, {contacts:1})
+    // .populate({
+    //     path: 'contacts.contact',
+    //     select: 'username  email'
+    // })
+    //  console.log('req.user: ',req.user)
     //  .populate({
     //      path: 'contacts.conversationId',
     //      select:  'participants creationTime',
@@ -31,6 +40,6 @@ router.use('/getAvailablecontacts', passport_1.default.authenticate('jwt', { ses
     //          select: 'email, username'
     //      }});
     //  console.log('list from the populate for availablecontacts3:', listOfAvailableContacts)
-    res.json(listOfAvailableContacts);
+    // res.json(listOfAvailableContacts);
 }));
 exports.default = router;

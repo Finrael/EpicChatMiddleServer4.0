@@ -13,26 +13,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 // imports
 const express_1 = __importDefault(require("express"));
-//  import User from '../db/models/messageSchema';
-const passport_1 = __importDefault(require("passport"));
 const router = express_1.default.Router();
-const messageSchema_1 = __importDefault(require("../db/models/messageSchema"));
-router.post('/getMessages', passport_1.default.authenticate('jwt', { session: false }), (req, res) => __awaiter(this, void 0, void 0, function* () {
-    try {
-        // console.log('body: ', req.body);
-        // console.log('user: ', req.user);
-        const listOfMessages = yield messageSchema_1.default.find({ conversationId: req.body.convId });
-        // console.log(listOfMessages)
-        const messagesObject = {
-            messageList: listOfMessages,
-            conversationId: req.body.convId
-        };
-        res.json(messagesObject);
-    }
-    catch (e) {
-        console.log(e);
-        res.end();
-    }
-    // res.json(newMessage)
+const axios_1 = __importDefault(require("axios"));
+router.post('/getMessages', (req, res) => __awaiter(this, void 0, void 0, function* () {
+    //  console.log('messageS:', req.body.convId)
+    axios_1.default.post('http://localhost:5002/api/getMessages', {}, { headers: { cookie: req.headers.cookie, convId: req.body.convId } }).then(function (response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // console.log('connected succesfully to authenticate', response.data)
+            res.json(response.data);
+        });
+    }).catch(function (error) {
+        console.log('failed to connect axios into convId');
+    }).then(function () {
+        console.log('got into the .then');
+    });
 }));
 exports.default = router;

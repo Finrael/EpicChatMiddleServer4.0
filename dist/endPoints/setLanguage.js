@@ -13,15 +13,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 // imports
 const express_1 = __importDefault(require("express"));
-const registerSchema_1 = __importDefault(require("../db/models/registerSchema"));
-const passport_1 = __importDefault(require("passport"));
 const router = express_1.default.Router();
-router.use('/setLanguage', passport_1.default.authenticate('jwt', { session: false }), (req, res) => __awaiter(this, void 0, void 0, function* () {
-    // console.log('from authenticate getProfile ',req.user);
-    console.log('///////////////////////////////////////', req.body.language);
-    let filter = { _id: req.user._id };
-    const update = { language: req.body.language };
-    const updateLanguage = yield registerSchema_1.default.update(filter, update);
-    res.json(updateLanguage);
+const axios_1 = __importDefault(require("axios"));
+router.post('/setLanguage', (req, res) => __awaiter(this, void 0, void 0, function* () {
+    // console.log('into facade axios version',req.body.language)
+    axios_1.default.post('http://localhost:5002/api/setLanguage', {}, { headers: { cookie: req.headers.cookie, language: req.body.language } }).then(function (response) {
+        console.log('connected succesfully to get contacts', response.data);
+        res.json(response.data);
+    }).catch(function (error) {
+        console.log('failed to connect axios into athenticate');
+    }).then(function () {
+        console.log('got into the .then');
+    });
 }));
 exports.default = router;

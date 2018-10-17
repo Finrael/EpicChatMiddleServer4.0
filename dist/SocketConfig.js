@@ -10,49 +10,33 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 }
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-}
 Object.defineProperty(exports, "__esModule", { value: true });
 const socket_io_1 = __importDefault(require("socket.io"));
-const jwt = __importStar(require("jsonwebtoken"));
-const registerSchema_1 = __importDefault(require("./db/models/registerSchema"));
-// import * as cookieParser from 'socket.io-cookie-parser'
-const constants_1 = __importDefault(require("./constants"));
+const axios_1 = __importDefault(require("axios"));
+const express_1 = __importDefault(require("express"));
+// import * as mongoose1 from 'mongoose'
+const router = express_1.default.Router();
 function Config(server) {
+    let aux;
     exports.io = socket_io_1.default(server);
     exports.io.use((socket, next) => __awaiter(this, void 0, void 0, function* () {
-        console.log('this', socket.request.headers.cookie);
-        const cookie = socket.request.headers.cookie;
-        let spreadCookie1 = cookie.split(';');
-        let spreadCookie2 = spreadCookie1[0].split('=');
-        let verifyHolder = jwt.verify(spreadCookie2[1], constants_1.default);
-        //  let verifyHolder2 = JSON.parse(verifyHolder)        
-        console.log('spreadcookoe', verifyHolder);
-        if (verifyHolder) {
-            try {
-                // passport.authenticate('jwt', {session:false})
-                let aux;
-                console.log('form the cookie???');
-                const UserData = yield registerSchema_1.default.findOne({ _id: verifyHolder._id });
-                console.log('conversation data', UserData.contacts[0].conversationId, '--------------------------------');
-                for (let i = 0; UserData.contacts.length > i; i++) {
-                    aux = UserData.contacts[i].conversationId.toString();
+        yield axios_1.default.post('http://localhost:5002/api/getConversationId', {}, { headers: { cookie: socket.request.headers.cookie } }).then(function (response) {
+            return __awaiter(this, void 0, void 0, function* () {
+                console.log('connected succesfully to authenticate', '----------------------');
+                console.log('this is the lenght of the data', response.data.contacts.length);
+                // console.log('conversation data', UserData!.contacts[0].conversationId, '--------------------------------')
+                for (let i = 0; response.data.contacts.length > i; i++) {
+                    aux = response.data.contacts[i].conversationId.toString();
                     socket.join(aux);
-                    console.log(aux);
+                    console.log('this is aux', aux);
                 }
-                socket.join(verifyHolder._id);
+                socket.join(response.data._id);
                 next();
-            }
-            catch (e) {
-                console.log(e);
-                // res.end();
-            }
-        }
+            });
+        }).catch(function (error) {
+            console.log('failed to connect axios into convId');
+        });
+        //    console.log('this*******************', socket.request.headers.cookie)
     }));
     exports.io.on('connection', (socket) => {
         // socket.on('ss',(data)=>{console.log('Socket component online')
@@ -60,20 +44,3 @@ function Config(server) {
     });
 }
 exports.Config = Config;
-//  try {
-//     console.log(req.user)
-//     const conversationData = await conversation.find({ participants:{participant:req.user!._id}  }, { participants: 1, creationTime: 1, _id: 1 })
-//     console.log('conversation data',conversationData,'--------------------------------')
-//     let aux: any = [];
-//     conversationData.map(m => {
-//         aux.push(m._id);
-//         // SocketIO.
-//         io.emit(m._id, (socket: SocketIO.Socket) => {
-//             console.log('a user connected')
-//         })
-//     })
-//     res.json(aux);
-// } catch (e) {
-//     console.log(e)
-//     res.end();
-// }

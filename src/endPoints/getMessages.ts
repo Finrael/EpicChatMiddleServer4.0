@@ -10,22 +10,23 @@
  import passportJWT from 'passport-jwt';
  import message from '../db/models/messageSchema';
 import {Types, Schema} from "mongoose";
+import axios from 'axios'
 
- router.post('/getMessages', passport.authenticate('jwt', {session:false}), async(req,res)=>{
-try{
-    // console.log('body: ', req.body);
-    // console.log('user: ', req.user);
-    const listOfMessages = await message.find({conversationId:req.body.convId})
-    // console.log(listOfMessages)
-    const messagesObject ={
-        messageList: listOfMessages,
-        conversationId:req.body.convId
-    }
- res.json(messagesObject);
-} catch(e){
-console.log(e)
-res.end();
-}
-// res.json(newMessage)
+ router.post('/getMessages',async(req,res)=>{
+    //  console.log('messageS:', req.body.convId)
+    axios.post('http://localhost:5002/api/getMessages',{},{headers:{cookie: req.headers.cookie, convId: req.body.convId}}).then(
+     async function(response){
+        // console.log('connected succesfully to authenticate', response.data)
+
+
+        res.json(response.data)
+      }
+    ).catch(function(error){
+      console.log('failed to connect axios into convId')
+    }).then(function(){
+      console.log('got into the .then')
+      
+    
+    })
  });
  export default router;

@@ -13,14 +13,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 // imports
 const express_1 = __importDefault(require("express"));
-const registerSchema_1 = __importDefault(require("../db/models/registerSchema"));
-const passport_1 = __importDefault(require("passport"));
 const router = express_1.default.Router();
-router.use('/authenticate', passport_1.default.authenticate('jwt', { session: false }), (req, res) => __awaiter(this, void 0, void 0, function* () {
+const axios_1 = __importDefault(require("axios"));
+router.use('/authenticate', (req, res) => __awaiter(this, void 0, void 0, function* () {
     // console.log('from authenticate getProfile ',req.user);
     // debugger
-    const dataFromProfile = yield registerSchema_1.default.findOne({ _id: req.user }, { username: 1, email: 1, contacts: 1, language: 1 });
-    // console.log('datafromProfile', dataFromProfile)
-    res.json(dataFromProfile);
+    // console.log('ON REQ.COOKIES',req.cookies)
+    // req.headers= req.cookies
+    // console.log(req.signedCookies)
+    yield axios_1.default.post('http://localhost:5001/api/authenticate', {}, { headers: { cookie: req.headers.cookie } }).then(function (response) {
+        // console.log('dsf///////////////////////////////')
+        // console.log('ddddddddddddddddddddd',response.data,'dddddddddddddddddddddddddddddd')
+        const toSend = { name: response.data.username, email: response.data.email, contacts: response.data.contacts, language: response.data.language };
+        res.json(toSend);
+    }).catch(function (error) {
+        console.log('//////////////////////error on axios on get profile');
+        res.json({ d: false });
+    });
+    // const dataFromProfile = await User.findOne({_id: req.user}, {username:1, email:1, contacts:1, language:1})
+    // // console.log('datafromProfile', dataFromProfile)
+    // res.json(dataFromProfile);
+    // 
 }));
 exports.default = router;

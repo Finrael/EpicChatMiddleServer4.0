@@ -24,13 +24,10 @@ const endPoints_1 = __importDefault(require("./../endPoints"));
 // import socket io
 const http_1 = __importDefault(require("http"));
 const SocketConfig_1 = require("../SocketConfig");
-// import * as SocketManager from ''
-// import {io}  from 'socket.io';
-// io(http)
 // instructions to connect to the db (registerDB)
 mongoose_1.default.connect('mongodb://localhost:27017/registerDB', (error) => {
     if (error) {
-        console.log('error');
+        console.log('error 1', error);
         process.exit();
         return;
     }
@@ -38,9 +35,6 @@ mongoose_1.default.connect('mongodb://localhost:27017/registerDB', (error) => {
         console.log('db connected');
     }
 });
-// io.on('connection', function (socket:any){
-// console.log('user has connected')
-// })
 // create the strategy for passport with the data from the schema
 passport_1.default.use(registerSchema_1.default.createStrategy());
 // initialize passport middleware

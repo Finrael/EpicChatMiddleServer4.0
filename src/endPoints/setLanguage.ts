@@ -8,13 +8,23 @@
  import jwt, { verify } from 'jsonwebtoken';
  import JWTSECRET from '../constants';
  import passportJWT from 'passport-jwt';
+ import axios from 'axios'
  
- router.use('/setLanguage', passport.authenticate('jwt', {session:false}), async(req,res)=>{
- // console.log('from authenticate getProfile ',req.user);
- console.log('///////////////////////////////////////', req.body.language)
-    let filter={_id:req.user!._id};
-    const update={language:req.body.language}
-    const updateLanguage = await User.update(filter,update);
- res.json(updateLanguage);
- });
+ router.post ('/setLanguage', async (req,res)=>{
+    // console.log('into facade axios version',req.body.language)
+    axios.post('http://localhost:5002/api/setLanguage',{},{headers:{cookie: req.headers.cookie, language: req.body.language}}).then(
+      function(response){
+        console.log('connected succesfully to get contacts', response.data)
+        res.json(response.data)
+      }
+    ).catch(function(error){
+      console.log('failed to connect axios into athenticate')
+    }).then(function(){
+      console.log('got into the .then')
+      
+    
+    })
+    
+  })
+  
  export default router;

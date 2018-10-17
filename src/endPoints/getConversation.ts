@@ -9,15 +9,23 @@ import JWTSECRET from '../constants';
 import passportJWT from 'passport-jwt';
 import conversation from '../db/models/conversationSchema';
 import { Types, Schema } from "mongoose";
+import axios from 'axios'
 
-router.post('/getConversation', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    try {
-        const conversationData = await conversation.findOne({ _id: req.body.convId }, { participants: 1, creationTime: 1, _id:1 })
-        console.log('from get conversations', conversationData, '----------------------------------------')
-        res.json(conversationData);
-    } catch (e) {
-        console.log(e)
-        res.end();
-    }
+router.post('/getConversation', async (req, res) => {
+// console.log('////////////-------',req.body.convId)
+    axios.post('http://localhost:5002/api/getConversation',{},{headers:{cookie: req.headers.cookie, convId: req.body.convId}}).then(
+     async function(response){
+        // console.log('connected succesfully to authenticate------------------', response.data)
+
+
+        res.json(response.data)
+      }
+    ).catch(function(error){
+      console.log('failed to connect axios into athenticate')
+    }).then(function(){
+      console.log('got into the .then')
+      
+    
+    })
 });
 export default router;
