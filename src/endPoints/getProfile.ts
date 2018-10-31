@@ -10,6 +10,7 @@ import JWTSECRET from '../constants';
 import passportJWT from 'passport-jwt';
 import axios from 'axios'
 import coockieParser from 'cookie-parser'
+import {authenticationServer_Api_Adress} from '../configFile'
 router.use('/authenticate', async(req,res)=>{
 // console.log('from authenticate getProfile ',req.user);
 // debugger
@@ -17,7 +18,7 @@ router.use('/authenticate', async(req,res)=>{
 // req.headers= req.cookies
 // console.log(req.signedCookies)
 
-await axios.post('http://localhost:5001/api/authenticate',{},{headers:{cookie: req.headers.cookie}}).then(function (response){
+await axios.post(authenticationServer_Api_Adress+'/authenticate',{},{headers:{cookie: req.headers.cookie}}).then(function (response){
 // console.log('dsf///////////////////////////////')
 
 // console.log('ddddddddddddddddddddd',response.data,'dddddddddddddddddddddddddddddd')

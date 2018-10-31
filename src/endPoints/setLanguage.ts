@@ -9,10 +9,10 @@
  import JWTSECRET from '../constants';
  import passportJWT from 'passport-jwt';
  import axios from 'axios'
- 
+ import {notificationServer_Api_Adress} from '../configFile'
  router.post ('/setLanguage', async (req,res)=>{
     // console.log('into facade axios version',req.body.language)
-    axios.post('http://localhost:5002/api/setLanguage',{},{headers:{cookie: req.headers.cookie, language: req.body.language}}).then(
+    axios.post(notificationServer_Api_Adress+'/setLanguage',{},{headers:{cookie: req.headers.cookie, language: req.body.language}}).then(
       function(response){
         console.log('connected succesfully to get contacts', response.data)
         res.json(response.data)

@@ -1,0 +1,16 @@
+version: "3"
+services:
+  middle:
+    build: ./
+    ports:
+    - "5000:5000"
+    links: 
+    - mongo
+  mongo:
+    image: mongo
+    ports:
+    - "6000:6000"
+    volumes: 
+    - data-volumen/data/middb
+
+

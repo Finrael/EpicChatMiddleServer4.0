@@ -11,6 +11,7 @@ import fetch from 'node-fetch'
 import  serverConstant from '../server/serverConstant'
 import http from 'http'
 import axios from 'axios'
+import {authenticationServer_Api_Adress} from '../configFile'
 // router.post('/logIn', passport.authenticate('local', { session: false }),async (req, res) => {
 //     const { _id, email,username } = req.user!;
 //     // console.log('req user from login', req.user)
@@ -22,7 +23,7 @@ import axios from 'axios'
 
 router.post ('/logIn', async (req,res)=>{
   // console.log('into facade axios version////////////////',req.body)
-  await axios.post('http://localhost:5001/api/logIn',{email:req.body.email, password:req.body.password}).then(
+  await axios.post(authenticationServer_Api_Adress+'/logIn',{email:req.body.email, password:req.body.password}).then(
     function(response){
       // console.log('connected succesfully', response.data)
        res.cookie('CookieUser', response.data)

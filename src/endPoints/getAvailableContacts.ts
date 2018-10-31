@@ -9,12 +9,12 @@
  import JWTSECRET from '../constants';
  import passportJWT from 'passport-jwt';
  import axios from 'axios';
- 
+ import {notificationServer_Api_Adress} from '../configFile'
  router.use('/getAvailablecontacts', async(req,res)=>{
 
-    axios.post('http://localhost:5002/api/getAvailablecontacts',{},{headers:{cookie: req.headers.cookie}}).then(
+    axios.post(notificationServer_Api_Adress+'/getAvailablecontacts',{},{headers:{cookie: req.headers.cookie}}).then(
      async function(response){
-        // console.log('connected succesfully to authenticate', response.data)
+        console.log('connected succesfully to authenticate', response.data)
 
 
         res.json(response.data)

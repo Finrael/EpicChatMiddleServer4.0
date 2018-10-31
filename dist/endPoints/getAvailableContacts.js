@@ -15,10 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 const axios_1 = __importDefault(require("axios"));
+const configFile_1 = require("../configFile");
 router.use('/getAvailablecontacts', (req, res) => __awaiter(this, void 0, void 0, function* () {
-    axios_1.default.post('http://localhost:5002/api/getAvailablecontacts', {}, { headers: { cookie: req.headers.cookie } }).then(function (response) {
+    axios_1.default.post(configFile_1.notificationServer_Api_Adress + '/getAvailablecontacts', {}, { headers: { cookie: req.headers.cookie } }).then(function (response) {
         return __awaiter(this, void 0, void 0, function* () {
-            // console.log('connected succesfully to authenticate', response.data)
+            console.log('connected succesfully to authenticate', response.data);
             res.json(response.data);
         });
     }).catch(function (error) {

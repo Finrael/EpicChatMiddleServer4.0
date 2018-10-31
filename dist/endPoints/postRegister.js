@@ -15,6 +15,7 @@ const express_1 = __importDefault(require("express"));
 const app = express_1.default();
 const router = express_1.default.Router();
 const node_fetch_1 = __importDefault(require("node-fetch"));
+const configFile_1 = require("../configFile");
 router.post('/register', (req, res) => __awaiter(this, void 0, void 0, function* () {
     // console.log('req.body in postregister.ts', req.body)
     const response = yield node_fetch_1.default('http://localhost:5001/api/registerUser', {
@@ -30,11 +31,14 @@ router.post('/register', (req, res) => __awaiter(this, void 0, void 0, function*
     else {
         console.log('passed properly from postRegister.ts');
     }
+    const user = yield response.json();
     // res.send(response)
-    const response2 = yield node_fetch_1.default('http://localhost:5002/api/addUserExtraInfo', {
-        method: 'post', body: JSON.stringify({
+    console.log('------------------------', user.user, '////////////////////////');
+    const response2 = yield node_fetch_1.default(configFile_1.notificationServer_Api_Adress + '/addUserExtraInfo', {
+        method: 'post', body: JSON.stringify({ _id: user.user,
             username: req.body.username, email: req.body.email,
-            password: req.body.password, language: req.body.language
+            password: req.body.password, language: req.body.language,
+            id: user.user,
         }),
         headers: { 'Content-Type': 'application/json' }
     });
@@ -46,29 +50,4 @@ router.post('/register', (req, res) => __awaiter(this, void 0, void 0, function*
     }
     res.end();
 }));
-// router.post('/register', (req, res) => {
-//     let post = new User({
-//         username: req.body.username,
-//         email: req.body.email,
-//         contacts: [],
-//         language:req.body.language,
-//     });
-//     post.setPassword(req.body.password, function (err, user) {
-//         if (err) {
-//             return res.status(500).end("Could not set password");
-//         }
-//         user.save(function (err: any) {
-//             if (err) {
-//                 res.status(500).end("server error while saving");
-//                 console.error(err);
-//                 throw err;
-//             } else {
-//                 console.log('save name successfull')
-//                 res.end();
-//             }
-//         })
-//     });
-//     // console.log('postRegister is in: ', req.body);
-// // res.end();
-// });
 exports.default = router;

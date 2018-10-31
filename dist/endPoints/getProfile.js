@@ -15,13 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 const axios_1 = __importDefault(require("axios"));
+const configFile_1 = require("../configFile");
 router.use('/authenticate', (req, res) => __awaiter(this, void 0, void 0, function* () {
     // console.log('from authenticate getProfile ',req.user);
     // debugger
     // console.log('ON REQ.COOKIES',req.cookies)
     // req.headers= req.cookies
     // console.log(req.signedCookies)
-    yield axios_1.default.post('http://localhost:5001/api/authenticate', {}, { headers: { cookie: req.headers.cookie } }).then(function (response) {
+    yield axios_1.default.post(configFile_1.authenticationServer_Api_Adress + '/authenticate', {}, { headers: { cookie: req.headers.cookie } }).then(function (response) {
         // console.log('dsf///////////////////////////////')
         // console.log('ddddddddddddddddddddd',response.data,'dddddddddddddddddddddddddddddd')
         const toSend = { name: response.data.username, email: response.data.email, contacts: response.data.contacts, language: response.data.language };

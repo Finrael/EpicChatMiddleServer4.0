@@ -9,13 +9,14 @@
  import JWTSECRET from '../constants';
  import passportJWT from 'passport-jwt';
  import axios from 'axios'
+ import {notificationServer_Api_Adress} from '../configFile'
  
  router.use('/getContacts',  (req,res)=>{
 
 
     // console.log('into facade axios version', req.body.emailToLookFor)
     const emailToFilter= req.body.emailToLookFor
-    axios.post('http://localhost:5002/api/getContacts',{},{headers:{cookie: req.headers.cookie, emailToLookFor:emailToFilter}}).then(
+    axios.post(notificationServer_Api_Adress+'/getContacts',{},{headers:{cookie: req.headers.cookie, emailToLookFor:emailToFilter}}).then(
       function(response){
         console.log('connected succesfully to authenticate', response.data)
         res.json(response.data)

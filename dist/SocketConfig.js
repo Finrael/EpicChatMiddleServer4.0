@@ -14,13 +14,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const socket_io_1 = __importDefault(require("socket.io"));
 const axios_1 = __importDefault(require("axios"));
 const express_1 = __importDefault(require("express"));
+const configFile_1 = require("./configFile");
 // import * as mongoose1 from 'mongoose'
 const router = express_1.default.Router();
 function Config(server) {
     let aux;
     exports.io = socket_io_1.default(server);
     exports.io.use((socket, next) => __awaiter(this, void 0, void 0, function* () {
-        yield axios_1.default.post('http://localhost:5002/api/getConversationId', {}, { headers: { cookie: socket.request.headers.cookie } }).then(function (response) {
+        yield axios_1.default.post(configFile_1.notificationServer_Api_Adress + '/getConversationId', {}, { headers: { cookie: socket.request.headers.cookie } }).then(function (response) {
             return __awaiter(this, void 0, void 0, function* () {
                 console.log('connected succesfully to authenticate', '----------------------');
                 console.log('this is the lenght of the data', response.data.contacts.length);

@@ -6,6 +6,7 @@ import User from '../db/models/registerSchema';
 const router = express.Router();
 import serverConst from '../server/serverConstant'
 import fetch from 'node-fetch'
+import {notificationServer_Api_Adress} from '../configFile'
 router.post('/register', async(req,res)=>{
     // console.log('req.body in postregister.ts', req.body)
     const response = await fetch('http://localhost:5001/api/registerUser',
@@ -21,13 +22,16 @@ router.post('/register', async(req,res)=>{
         else {
            console.log('passed properly from postRegister.ts')
         }
+    const user = await response.json();
 // res.send(response)
-const response2 = await fetch('http://localhost:5002/api/addUserExtraInfo',
+console.log('------------------------',user.user,'////////////////////////')
+const response2 = await fetch(notificationServer_Api_Adress+'/addUserExtraInfo',
 {
     method: 'post', body: JSON.stringify(
-        {
+        {   _id:user.user,
             username: req.body.username, email:req.body.email,
-            password: req.body.password, language: req.body.language
+            password: req.body.password, language: req.body.language,
+            id:user.user,
         }),
     headers: { 'Content-Type': 'application/json' }
   
@@ -39,32 +43,6 @@ console.log('passed properly from postRegister.ts')
 res.end()
 })
 
-// router.post('/register', (req, res) => {
 
-//     let post = new User({
-//         username: req.body.username,
-//         email: req.body.email,
-//         contacts: [],
-//         language:req.body.language,
-//     });
-//     post.setPassword(req.body.password, function (err, user) {
-//         if (err) {
-//             return res.status(500).end("Could not set password");
-//         }
-//         user.save(function (err: any) {
-//             if (err) {
-//                 res.status(500).end("server error while saving");
-//                 console.error(err);
-//                 throw err;
-//             } else {
-//                 console.log('save name successfull')
-//                 res.end();
-//             }
-//         })
-//     });
-//     // console.log('postRegister is in: ', req.body);
-// // res.end();
-// });
- 
 
 export default router;

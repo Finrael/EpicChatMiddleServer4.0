@@ -15,11 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 const axios_1 = __importDefault(require("axios"));
+const configFile_1 = require("../configFile");
 router.post('/addContacts', (req, res) => __awaiter(this, void 0, void 0, function* () {
     const selectedToAdd = req.body.userToAdd;
     const requestingUser = req.body.email;
     // console.log('selected user', selectedToAdd, 'requesting user',requestingUser)
-    axios_1.default.post('http://localhost:5002/api/addContacts', {}, { headers: { cookie: req.headers.cookie, usertoadd: selectedToAdd, email: requestingUser } }).then(function (response) {
+    axios_1.default.post(configFile_1.notificationServer_Api_Adress + '/addContacts', {}, { headers: { cookie: req.headers.cookie, usertoadd: selectedToAdd, email: requestingUser } }).then(function (response) {
         // console.log('connected succesfully to authenticate', response.data)
         res.send('response.data');
     }).catch(function (error) {

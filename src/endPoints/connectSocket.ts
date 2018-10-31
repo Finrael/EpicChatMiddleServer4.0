@@ -14,7 +14,7 @@ import SocketIO from 'socket.io';
 router.post('/connectSockets',  async (req, res) => {
 
         const conversationData = await conversation.find({ _id: req.body.convId }, { participants: 1, creationTime: 1, _id:1 })
-        console.log(conversationData)
+        console.log('this is conversation data', conversationData)
        
         let aux:any=[];
         conversationData.map(m=>{

@@ -11,12 +11,13 @@ import passportJWT from 'passport-jwt';
 import conversation from '../db/models/conversationSchema';
 import moment from 'moment';
 import axios from 'axios'
+import {notificationServer_Api_Adress} from '../configFile'
 
 router.post('/addContacts' , async (req, res) => {
     const selectedToAdd= req.body.userToAdd;
     const requestingUser= req.body.email;
     // console.log('selected user', selectedToAdd, 'requesting user',requestingUser)
-    axios.post('http://localhost:5002/api/addContacts',{},{headers:{cookie: req.headers.cookie,usertoadd:selectedToAdd, email:requestingUser }}).then(
+    axios.post(notificationServer_Api_Adress+'/addContacts',{},{headers:{cookie: req.headers.cookie,usertoadd:selectedToAdd, email:requestingUser }}).then(
         function(response){
           // console.log('connected succesfully to authenticate', response.data)
           res.send('response.data')

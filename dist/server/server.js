@@ -24,10 +24,13 @@ const endPoints_1 = __importDefault(require("./../endPoints"));
 // import socket io
 const http_1 = __importDefault(require("http"));
 const SocketConfig_1 = require("../SocketConfig");
+const configFile_1 = require("../configFile");
 // instructions to connect to the db (registerDB)
-mongoose_1.default.connect('mongodb://localhost:27017/registerDB', (error) => {
+mongoose_1.default.connect(
+// 'mongodb://192.168.99.100:6000/registerDB', (error: any) => {
+'mongodb://' + configFile_1.mongo_serverAddress + ':' + configFile_1.mongo_serverPort + '/CommsDB', (error) => {
     if (error) {
-        console.log('error 1', error);
+        console.log('error on mongo connnect', error);
         process.exit();
         return;
     }

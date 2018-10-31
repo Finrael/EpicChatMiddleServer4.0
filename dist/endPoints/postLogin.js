@@ -15,6 +15,7 @@ const express_1 = __importDefault(require("express"));
 const app = express_1.default();
 const router = express_1.default.Router();
 const axios_1 = __importDefault(require("axios"));
+const configFile_1 = require("../configFile");
 // router.post('/logIn', passport.authenticate('local', { session: false }),async (req, res) => {
 //     const { _id, email,username } = req.user!;
 //     // console.log('req user from login', req.user)
@@ -24,7 +25,7 @@ const axios_1 = __importDefault(require("axios"));
 // });
 router.post('/logIn', (req, res) => __awaiter(this, void 0, void 0, function* () {
     // console.log('into facade axios version////////////////',req.body)
-    yield axios_1.default.post('http://localhost:5001/api/logIn', { email: req.body.email, password: req.body.password }).then(function (response) {
+    yield axios_1.default.post(configFile_1.authenticationServer_Api_Adress + '/logIn', { email: req.body.email, password: req.body.password }).then(function (response) {
         // console.log('connected succesfully', response.data)
         res.cookie('CookieUser', response.data);
         // res.end()

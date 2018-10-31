@@ -10,6 +10,7 @@ import JWTSECRET from './constants'
 import axios from 'axios'
 import express, {json} from 'express'
 import { Mongoose, Types } from 'mongoose';
+import {notificationServer_Api_Adress} from './configFile'
 // import * as mongoose1 from 'mongoose'
 const router = express.Router();
 export function Config(server: Http.Server) {
@@ -17,7 +18,7 @@ export function Config(server: Http.Server) {
     io = SocketIO(server);
 
     io.use(async(socket, next) => {
-      await  axios.post('http://localhost:5002/api/getConversationId',{}, {headers:{cookie: socket.request.headers.cookie}}).then(
+      await  axios.post(notificationServer_Api_Adress+'/getConversationId',{}, {headers:{cookie: socket.request.headers.cookie}}).then(
 
             async function(response){
                console.log('connected succesfully to authenticate',  '----------------------')

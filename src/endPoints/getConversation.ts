@@ -10,10 +10,11 @@ import passportJWT from 'passport-jwt';
 import conversation from '../db/models/conversationSchema';
 import { Types, Schema } from "mongoose";
 import axios from 'axios'
+import {notificationServer_Api_Adress} from '../configFile'
 
 router.post('/getConversation', async (req, res) => {
 // console.log('////////////-------',req.body.convId)
-    axios.post('http://localhost:5002/api/getConversation',{},{headers:{cookie: req.headers.cookie, convId: req.body.convId}}).then(
+    axios.post(notificationServer_Api_Adress+'/getConversation',{},{headers:{cookie: req.headers.cookie, convId: req.body.convId}}).then(
      async function(response){
         // console.log('connected succesfully to authenticate------------------', response.data)
 

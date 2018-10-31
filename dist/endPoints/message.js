@@ -16,10 +16,11 @@ const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 const SocketConfig_1 = require("../SocketConfig");
 const axios_1 = __importDefault(require("axios"));
+const configFile_1 = require("../configFile");
 router.use('/message', (req, res) => __awaiter(this, void 0, void 0, function* () {
     //  console.log('from authenticate getProfile ',req.user);
     // console.log('messageS:', req.body.convId)
-    axios_1.default.post('http://localhost:5002/api/message', {}, { headers: { cookie: req.headers.cookie, convId: req.body.convId, textMessage: req.body.textMessage } }).then(function (response) {
+    axios_1.default.post(configFile_1.notificationServer_Api_Adress + '/message', {}, { headers: { cookie: req.headers.cookie, convId: req.body.convId, textMessage: req.body.textMessage } }).then(function (response) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log('connected succesfully to authenticate', response.data);
             SocketConfig_1.io.to(response.data.convId).emit('newMessage', response.data.message);

@@ -12,10 +12,11 @@
 import {Types, Schema} from "mongoose";
 import  {io} from '../SocketConfig'
 import axios from 'axios'
+import {notificationServer_Api_Adress} from '../configFile'
  router.use('/message',async(req,res)=>{
 //  console.log('from authenticate getProfile ',req.user);
 // console.log('messageS:', req.body.convId)
-axios.post('http://localhost:5002/api/message',{},{headers:{cookie: req.headers.cookie, convId: req.body.convId, textMessage: req.body.textMessage}}).then(
+axios.post(notificationServer_Api_Adress+'/message',{},{headers:{cookie: req.headers.cookie, convId: req.body.convId, textMessage: req.body.textMessage}}).then(
  async function(response){
     console.log('connected succesfully to authenticate', response.data)
 

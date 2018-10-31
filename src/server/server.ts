@@ -28,13 +28,13 @@ import http from 'http';
 import SocketIO from 'socket.io';
 import conversation from '../db/models/conversationSchema'
 import {Config, io} from '../SocketConfig'
-
+import {mongo_serverAddress, mongo_serverPort} from  '../configFile'
 // instructions to connect to the db (registerDB)
 mongoose.connect(
-    'mongodb://localhost:27017/registerDB', (error: any) => {
-
+    // 'mongodb://192.168.99.100:6000/registerDB', (error: any) => {
+        'mongodb://'+mongo_serverAddress +':'+mongo_serverPort+'/CommsDB', (error: any) => {
         if (error) {
-            console.log('error 1', error);
+            console.log('error on mongo connnect', error);
             process.exit();
             return
         }

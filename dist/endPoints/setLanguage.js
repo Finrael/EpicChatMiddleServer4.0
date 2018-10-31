@@ -15,9 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 const axios_1 = __importDefault(require("axios"));
+const configFile_1 = require("../configFile");
 router.post('/setLanguage', (req, res) => __awaiter(this, void 0, void 0, function* () {
     // console.log('into facade axios version',req.body.language)
-    axios_1.default.post('http://localhost:5002/api/setLanguage', {}, { headers: { cookie: req.headers.cookie, language: req.body.language } }).then(function (response) {
+    axios_1.default.post(configFile_1.notificationServer_Api_Adress + '/setLanguage', {}, { headers: { cookie: req.headers.cookie, language: req.body.language } }).then(function (response) {
         console.log('connected succesfully to get contacts', response.data);
         res.json(response.data);
     }).catch(function (error) {

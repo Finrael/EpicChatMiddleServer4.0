@@ -11,10 +11,11 @@
  import message from '../db/models/messageSchema';
 import {Types, Schema} from "mongoose";
 import axios from 'axios'
+import {notificationServer_Api_Adress} from '../configFile'
 
  router.post('/getMessages',async(req,res)=>{
     //  console.log('messageS:', req.body.convId)
-    axios.post('http://localhost:5002/api/getMessages',{},{headers:{cookie: req.headers.cookie, convId: req.body.convId}}).then(
+    axios.post(notificationServer_Api_Adress+'/getMessages',{},{headers:{cookie: req.headers.cookie, convId: req.body.convId}}).then(
      async function(response){
         // console.log('connected succesfully to authenticate', response.data)
 

@@ -7,10 +7,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 const axios_1 = __importDefault(require("axios"));
+const configFile_1 = require("../configFile");
 router.use('/getContacts', (req, res) => {
     // console.log('into facade axios version', req.body.emailToLookFor)
     const emailToFilter = req.body.emailToLookFor;
-    axios_1.default.post('http://localhost:5002/api/getContacts', {}, { headers: { cookie: req.headers.cookie, emailToLookFor: emailToFilter } }).then(function (response) {
+    axios_1.default.post(configFile_1.notificationServer_Api_Adress + '/getContacts', {}, { headers: { cookie: req.headers.cookie, emailToLookFor: emailToFilter } }).then(function (response) {
         console.log('connected succesfully to authenticate', response.data);
         res.json(response.data);
     }).catch(function (error) {
