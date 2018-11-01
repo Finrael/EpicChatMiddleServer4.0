@@ -6,10 +6,10 @@ import User from '../db/models/registerSchema';
 const router = express.Router();
 import serverConst from '../server/serverConstant'
 import fetch from 'node-fetch'
-import {notificationServer_Api_Adress} from '../configFile'
+import {notificationServer_Api_Adress, authenticationServer_Api_Adress} from '../configFile'
 router.post('/register', async(req,res)=>{
     // console.log('req.body in postregister.ts', req.body)
-    const response = await fetch('http://localhost:5001/api/registerUser',
+    const response = await fetch(authenticationServer_Api_Adress+'/registerUser',
             {
                 method: 'post', body: JSON.stringify(
                     {

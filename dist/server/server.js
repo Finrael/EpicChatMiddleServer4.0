@@ -28,7 +28,7 @@ const configFile_1 = require("../configFile");
 // instructions to connect to the db (registerDB)
 mongoose_1.default.connect(
 // 'mongodb://192.168.99.100:6000/registerDB', (error: any) => {
-'mongodb://' + configFile_1.mongo_serverAddress + ':' + configFile_1.mongo_serverPort + '/CommsDB', (error) => {
+'mongodb://' + configFile_1.mongo_serverAddress + ':' + configFile_1.mongo_serverPort + '/MiddleDB', (error) => {
     if (error) {
         console.log('error on mongo connnect', error);
         process.exit();

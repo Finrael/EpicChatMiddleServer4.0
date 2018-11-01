@@ -1,16 +1,19 @@
 version: "3"
 services:
-  middle:
+  middleserver:
     build: ./
     ports:
     - "5000:5000"
     links: 
-    - mongo
-  mongo:
+    - middlemongo
+  middlemongo:
     image: mongo
     ports:
-    - "6000:6000"
+    - "6000:27017"
     volumes: 
-    - data-volumen/data/middb
+    - middleData:/data/middleDB
+
+volumes:
+  middleData:
 
 

@@ -32,7 +32,7 @@ import {mongo_serverAddress, mongo_serverPort} from  '../configFile'
 // instructions to connect to the db (registerDB)
 mongoose.connect(
     // 'mongodb://192.168.99.100:6000/registerDB', (error: any) => {
-        'mongodb://'+mongo_serverAddress +':'+mongo_serverPort+'/CommsDB', (error: any) => {
+        'mongodb://'+mongo_serverAddress +':'+mongo_serverPort+'/MiddleDB', (error: any) => {
         if (error) {
             console.log('error on mongo connnect', error);
             process.exit();

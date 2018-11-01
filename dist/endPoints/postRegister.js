@@ -18,7 +18,7 @@ const node_fetch_1 = __importDefault(require("node-fetch"));
 const configFile_1 = require("../configFile");
 router.post('/register', (req, res) => __awaiter(this, void 0, void 0, function* () {
     // console.log('req.body in postregister.ts', req.body)
-    const response = yield node_fetch_1.default('http://localhost:5001/api/registerUser', {
+    const response = yield node_fetch_1.default(configFile_1.authenticationServer_Api_Adress + '/registerUser', {
         method: 'post', body: JSON.stringify({
             username: req.body.username, email: req.body.email,
             password: req.body.password, language: req.body.language
