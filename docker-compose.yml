@@ -9,7 +9,7 @@ services:
   middlemongo:
     image: mongo
     ports:
-    - "6000:27017"
+    - "27017:27017"
     volumes: 
     - middleData:/data/middleDB
 

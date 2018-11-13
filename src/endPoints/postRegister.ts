@@ -40,7 +40,7 @@ if (response2.status !== 200) { throw Error('error'); }
 else {
 console.log('passed properly from postRegister.ts')
 }
-res.end()
+res.end('testing for answer')
 })
 
 
